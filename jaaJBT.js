@@ -1,6 +1,6 @@
 /* jshint esversion: 6,-W097, -W040, node: true, expr: true, undef: true */
 const /* configs files paths */
-    version= "0.1.0",
+    version= "0.2.0",
     remote_url= "https://raw.githubusercontent.com/jaandrle/jaaJBT/master/",
     config_key_name= "jaaJBT",
     config_local= "./package.json",
@@ -32,7 +32,7 @@ switch (cmd_arguments[0]){
 
 function check(cb){
     if(!local_jaaJBT) return toConsole("Local versions", "warn", "_no_local");
-    get(config_remote)
+    get(`${config_remote}?v=${Math.random()}`)
     .then(function(data){
         const remote_jaaJBT= JSON.parse(data);
         let results= [];
@@ -69,8 +69,8 @@ function pull(remote, results_all){
     function toObject(res){ const key= res.split("@v")[0]; return Object.assign({ key }, remote.scripts[key]); }
 }
 function downloadNth(def){
-    const { src, target_path }= def;
-    return download(remote_url+src, local_jaaJBT.config[target_path]+src.substring(src.lastIndexOf("/")+1), def);
+    const { src, target_path, version }= def;
+    return download(`${remote_url}${src}?v=${version}`, local_jaaJBT.config[target_path]+src.substring(src.lastIndexOf("/")+1), def);
 }
 function UpdateConfig(results){
     results.forEach(({ key, version })=> local_jaaJBT.scripts[key]= `~${version}`);
