@@ -2,15 +2,18 @@
     "scripts": {
         "gulp_cleanJSHINT": {
             "version": "0.1.0",
-            "src": "scripts/gulp_cleanJSHINT.js"
+            "src": "scripts/gulp_cleanJSHINT.js",
+            "target_path": "gulp_path"
         },
         "gulp_place": {
             "version": "1.5.1",
-            "src": "scripts/gulp_place.js"
+            "src": "scripts/gulp_place.js",
+            "target_path": "gulp_path"
         }
         },
         "jsonDoc": {
             "version": "0.1.0",
-            "src": "scripts/jsonDoc.js"
+            "src": "scripts/jsonDoc.js",
+            "target_path": "gulp_path"
         }
 }
