@@ -1,0 +1,16 @@
+{
+    "scripts": {
+        "gulp_cleanJSHINT": {
+            "version": "0.1.0",
+            "src": "scripts/gulp_cleanJSHINT.js"
+        },
+        "gulp_place": {
+            "version": "1.5.1",
+            "src": "scripts/gulp_place.js"
+        }
+        },
+        "jsonDoc": {
+            "version": "0.1.0",
+            "src": "scripts/jsonDoc.js"
+        }
+}
