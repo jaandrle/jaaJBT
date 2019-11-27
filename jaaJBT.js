@@ -1,6 +1,6 @@
 /* jshint esversion: 6,-W097, -W040, node: true, expr: true, undef: true */
 const /* configs files paths */
-    version= "0.2.0",
+    version= "0.2.1",
     remote_url= "https://raw.githubusercontent.com/jaandrle/jaaJBT/master/",
     config_key_name= "jaaJBT",
     config_local= "./package.json",
@@ -36,7 +36,7 @@ function check(cb){
     .then(function(data){
         const remote_jaaJBT= JSON.parse(data);
         let results= [];
-        if(local_jaaJBT.config.version!==remote_jaaJBT.config.version) return toConsole(`Update is not possible (new version ${remote_jaaJBT.config.version})`, "error", spaces.repeat(2)+"Your `jaaJBT.js` script must be up-to-date to proper comparing/updating!");
+        if(version!==remote_jaaJBT.config.version) return toConsole(`Update is not possible (new version ${remote_jaaJBT.config.version})`, "error", spaces.repeat(2)+"Your `jaaJBT.js` script must be up-to-date to proper comparing/updating!");
         Object.keys(local_jaaJBT.scripts||{}).forEach(function(key){
             const remote_k= remote_jaaJBT.scripts[key];
             let local_k= local_jaaJBT.scripts[key];
