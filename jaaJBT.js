@@ -1,4 +1,5 @@
 /* jshint esversion: 6,-W097, -W040, node: true, expr: true, undef: true */
+/* node has 5min cahce for requests!!! */
 const /* configs files paths */
     version= "0.2.2",
     remote_url= "https://raw.githubusercontent.com/jaandrle/jaaJBT/master/",
