@@ -33,7 +33,7 @@ switch (cmd_arguments[0]){
 
 function check(cb){
     if(!local_jaaJBT) return toConsole("Local versions", "warn", "_no_local");
-    get(config_remote)
+    get(`${config_remote}?v=${Math.random()}`)
     .then(function(data){
         const remote_jaaJBT= JSON.parse(data);
         let results= [];
