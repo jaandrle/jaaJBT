@@ -7,7 +7,6 @@ const /* configs files paths */
     config_remote= remote_url+"jaaJBT.json";
 const /* dependences */
     fs= require("fs"),
-    url_path= require('url'),
     https= require("https");
 const /* local config, arguments */
     package_json= JSON.parse(fs.readFileSync(config_local)),
@@ -80,7 +79,7 @@ function UpdateConfig(results){
     return results;
 }
 
-function get(url){ return new Promise(function(resolve, reject){ https.get(Object.assign(url_path.parse(url), { agent: false }), response=> response.on("data", resolve)).on("error", reject); }); }
+function get(url){ return new Promise(function(resolve, reject){ https.get(url, response=> response.on("data", resolve)).on("error", reject); }); }
 function download(from, to, share){ return new Promise(function(resolve, reject){
     const file= fs.createWriteStream(to);
     https.get(from, function(response) {
