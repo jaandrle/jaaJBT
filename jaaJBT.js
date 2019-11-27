@@ -78,7 +78,7 @@ function UpdateConfig(results){
     return results;
 }
 
-function get(url){ return new Promise(function(resolve, reject){ https.get(url, response=> response.on("data", resolve)).on("error", reject); }); }
+function get(url){ return new Promise(function(resolve, reject){ https.get(url, { agent: false },response=> response.on("data", resolve)).on("error", reject); }); }
 function download(from, to, share){ return new Promise(function(resolve, reject){
     const file= fs.createWriteStream(to);
     https.get(from, function(response) {
