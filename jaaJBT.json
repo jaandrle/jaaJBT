@@ -1,25 +1,25 @@
 {
     "config": {
-        "version": "0.2.0"
+        "version": "0.2.1"
     },
     "scripts": {
         "gulpfile": {
-            "version": "0.9.0",
+            "version": "0.9.1",
             "src": "scripts/gulpfile.js",
             "target_path": "root_path"
         },
         "gulp_cleanJSHINT": {
-            "version": "0.1.0",
+            "version": "0.1.1",
             "src": "scripts/gulp_cleanJSHINT.js",
             "target_path": "gulp_path"
         },
         "gulp_place": {
-            "version": "1.5.1",
+            "version": "1.5.2",
             "src": "scripts/gulp_place.js",
             "target_path": "gulp_path"
         },
         "jsonDoc": {
-            "version": "0.1.0",
+            "version": "0.1.1",
             "src": "scripts/jsonDoc.js",
             "target_path": "gulp_path"
         }

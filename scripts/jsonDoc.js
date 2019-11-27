@@ -1,4 +1,5 @@
 /* jshint esversion: 6,-W097, -W040, node: true, expr: true, undef: true */
+/* version 0.1.1 */
 module.exports= function initGenerateJSONDoc({
         fs,
         root_path= "",

@@ -1,4 +1,5 @@
 /* jshint esversion: 6, node: true */
+/* version 0.9.1 */
 /* \CONFIG\ */
 const config= (function(){
     let $o_default= {spawn: require('child_process').spawn, fs: require("fs")};

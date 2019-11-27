@@ -6,7 +6,7 @@
         'gulp-replace'
         'fs'
     @version
-        1.5.1
+        1.5.2
     @examples
         gulp_place("file_path") === gulp_place("file_path", "file"): replaced by "file_path" content
         gulp_place("file_path${some_var_inside_gulp}") === gulp_place("file_path${some_var_inside_gulp}", "file"): replaced by '"file_path"+some_var_inside_gulp' content
