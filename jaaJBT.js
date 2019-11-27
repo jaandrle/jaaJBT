@@ -1,12 +1,13 @@
 /* jshint esversion: 6,-W097, -W040, node: true, expr: true, undef: true */
 const /* configs files paths */
-    version= "0.2.1",
+    version= "0.2.2",
     remote_url= "https://raw.githubusercontent.com/jaandrle/jaaJBT/master/",
     config_key_name= "jaaJBT",
     config_local= "./package.json",
     config_remote= remote_url+"jaaJBT.json";
 const /* dependences */
     fs= require("fs"),
+    url_path= require('url'),
     https= require("https");
 const /* local config, arguments */
     package_json= JSON.parse(fs.readFileSync(config_local)),
@@ -32,7 +33,7 @@ switch (cmd_arguments[0]){
 
 function check(cb){
     if(!local_jaaJBT) return toConsole("Local versions", "warn", "_no_local");
-    get(`${config_remote}?v=${Math.random()}`)
+    get(config_remote)
     .then(function(data){
         const remote_jaaJBT= JSON.parse(data);
         let results= [];
@@ -53,6 +54,7 @@ function check(cb){
         toConsole("Versions comparisons", "normal", results.map(([ key, result, color, version ])=> `${spaces.repeat(2)}${key}: ${color}${result}${colors.R}` + (version ? ` (${version})` : "")).join("\n"));
         if(cb) cb(remote_jaaJBT, results);
     })
+    .catch(console.log)
     .catch(toConsole.bind(null, "Remote versions", "error", "_no_connection"));
 }
 function pull(remote, results_all){
@@ -78,7 +80,7 @@ function UpdateConfig(results){
     return results;
 }
 
-function get(url){ return new Promise(function(resolve, reject){ https.get(url, { agent: false },response=> response.on("data", resolve)).on("error", reject); }); }
+function get(url){ return new Promise(function(resolve, reject){ https.get(Object.assign(url_path.parse(url), { agent: false }), response=> response.on("data", resolve)).on("error", reject); }); }
 function download(from, to, share){ return new Promise(function(resolve, reject){
     const file= fs.createWriteStream(to);
     https.get(from, function(response) {
