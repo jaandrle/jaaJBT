@@ -12,11 +12,11 @@
             "version": "1.5.1",
             "src": "scripts/gulp_place.js",
             "target_path": "gulp_path"
-        }
         },
         "jsonDoc": {
             "version": "0.1.0",
             "src": "scripts/jsonDoc.js",
             "target_path": "gulp_path"
         }
+    }
 }
