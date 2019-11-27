@@ -1,4 +1,7 @@
 {
+    "config": {
+        "version": "0.1.0"
+    },
     "scripts": {
         "gulp_cleanJSHINT": {
             "version": "0.1.0",
