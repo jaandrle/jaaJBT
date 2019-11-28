@@ -1,4 +1,5 @@
 /* jshint esversion: 6,-W097, -W040, node: true, expr: true */
+/* version 0.1.1 */
 module.exports= function({gulp, scripts, $g, $o, app, cordova_target_device, error}){
     const /* files source and destination */
         folders_name= [ "css/", "fonts/" ],

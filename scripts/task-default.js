@@ -1,4 +1,5 @@
 /* jshint esversion: 6,-W097, -W040, node: true, expr: true */
+/* version 1.0.0 */
 module.exports= function({gulp, scripts, $g, $o, app, cordova_target_device, error}){
     return function(cb){
         const logs= app.directories.gulp+"logs/gulpfile.log";
@@ -10,7 +11,7 @@ module.exports= function({gulp, scripts, $g, $o, app, cordova_target_device, err
                 if(i_sequence.charAt(0)!=="!") sequence[sequence.length]= i_sequence;
                 else if(full_sequence&&i_sequence!=="!run c !") sequence[sequence.length]= i_sequence.substr(1);
             }
-            gulp.series(...sequence)(gotoEnd.bind(null, show_github ? scripts.github : ""));
+            gulp.series(...sequence)(gotoEnd.bind(null, show_github ? app.shared.github : ""));
         });
         function gotoEnd(github){
             if(error.getNum()) return $g.util.log($g.util.colors.red('[Error]'), `Jeden z procesů vyhodil chybu — některé navazující procesy nemuseli být provedeny!'.`);

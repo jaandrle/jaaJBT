@@ -1,13 +1,23 @@
 /* jshint esversion: 6, node: true */
-/* version 0.9.1 */
+/* version 1.1.0 */
 /* \CONFIG\ */
+const shared_file_path= 
+    /* 
+        OS X        - '/Users/user/Library/Preferences/package_global.json'
+        Windows 8   - 'C:\Users\user\AppData\Roaming\package_global.json'
+        Windows XP  - 'C:\Documents and Settings\user\Application Data\package_global.json'
+        Linux       - '/home/user/.local/share/package_global.json'
+     */
+    (process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share"))+'/package_global.json';
+const shared_default= { github: "", cordova_wrapper: "" };
 const config= (function(){
     let $o_default= {spawn: require('child_process').spawn, fs: require("fs")};
     const gulp= require('gulp'),
           $gulp_task_folder= "./gulp/tasks/",
           package_json= JSON.parse($o_default.fs.readFileSync('./package.json')),
+          shared= $o_default.fs.existsSync(shared_file_path) ? JSON.parse($o_default.fs.readFileSync(shared_file_path)) : shared_default,
           { $g, $o }= mapDependencies(Object.assign({}, package_json.dependencies, package_json.devDependencies), $o_default);
-    const app= package_json.app_keys_map.reduce((acc, curr)=> (acc[curr[0]]= package_json[curr[1]||curr[0]], acc), {});
+    const app= package_json.app_keys_map.reduce((acc, curr)=> (acc[curr[0]]= package_json[curr[1]||curr[0]], acc), { shared });
     if(!app.folderName) app.folderName= package_json.homepage.substring(package_json.homepage.lastIndexOf("/")+1);
     return { gulp, $gulp_task_folder, $g, $o, app, scripts: package_json.scripts, cordova_target_device: package_json.cordova_target_device, error: error() };
 })();
