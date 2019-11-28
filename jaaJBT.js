@@ -29,7 +29,7 @@ switch (cmd_arguments[0]){
 
 function check(cb){
     if(!local_jaaJBT) return toConsole("Local versions", "warn", "_no_local");
-    Promise.all(Object.keys(local_jaaJBT.resourses).map(key=> `${local_jaaJBT.resourses[key]}${config_remote_name}?v=${Math.random()}`).map(getJSON))
+    Promise.all(local_jaaJBT.resourses.map(res=> `${res}${config_remote_name}?v=${Math.random()}`).map(getJSON))
     .then(function(data){
         const remote_jaaJBT= data.reduce(function(acc, curr){
             const { config: { version, root_url }= {}, scripts }= curr;
