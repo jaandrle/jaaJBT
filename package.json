@@ -1,0 +1,69 @@
+{
+    "__SECTION_APP": "",
+    "__SECTION_GULP": "",
+    "fullName": "jaaJBT",
+    "name": "jaajbt",
+    "version": "1.0.0",
+    "build": "0003",
+    "language": "EN",
+    "_BUILD_": "Tento klic se meni v prubehu buildu dle `gulp_place('app._BUILD_= …', 'eval')!`",
+    "cordova_target_device": " ",
+    "__Comment__sequence": "exclamation mark (!) on the start of task name means to escape it",
+    "sequence": [
+        "javascript"
+    ],
+    "app_keys_map": [
+        [ "name", "fullName" ], [ "app_id", "name" ], [ "version" ],
+        [ "description" ], [ "directories" ], [ "sequence" ],
+        [ "homepage" ], 
+        [ "_BUILD_" ]
+    ],
+    "__SECTION_NPM": "",
+    "directories": {
+        "gulp": "gulp/",
+        "doc": "docs/",
+        "src": "src/",
+        "bin": "bin/"
+    },
+    "license": "AGPL-3.0",
+    "author": "Jan Andrle <andrle.jan@centrum.cz>",
+    "description": "",
+    "main": "gulpfile.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "gulp": "gulp",
+        "jshint": "node ./node_modules/jshint/bin/jshint --verbose",
+        "jshint_full": "node ./node_modules/jshint/bin/jshint --verbose --show-non-errors"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jaandrle/jaaJBT.git"
+    },
+    "bugs": {
+        "url": "https://github.com/jaandrle/jaaJBT/issues"
+    },
+    "homepage": "https://github.com/jaandrle/jaaJBT",
+    "dependencies": {
+        "gulp": "^4.0.2",
+        "gulp-clean-css": "^4.2.0",
+        "gulp-concat": ">=2.6.1",
+        "gulp-imagemin": "^6.0.0",
+        "gulp-minify": ">=3.1.0",
+        "gulp-rename": ">=1.4.0",
+        "gulp-replace": ">=1.0.0",
+        "gulp-sourcemaps": "^2.6.5",
+        "gulp-stylus": ">=2.7.0",
+        "gulp-util": ">=3.0.8",
+        "gulp-htmlmin": ">=5.0.1",
+        "jshint": "^2.9.7"
+    },
+    "devDependencies": {
+        "jsdoc-to-markdown": "^5.0.1"
+    },
+    "__SECTION__JSHINT": "",
+    "jshintConfig": {
+        "esversion": 6,
+        "browser": "true",
+        "undef": "true"
+    }
+}

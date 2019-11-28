@@ -6,52 +6,52 @@
     "scripts": {
         "gulpfile": {
             "version": "1.1.0",
-            "src": "scripts/gulpfile.js",
+            "src": "bin/gulpfile.js",
             "target_path": "root_path"
         },
         "gulp_cleanJSHINT": {
             "version": "0.1.1",
-            "src": "scripts/gulp_cleanJSHINT.js",
+            "src": "bin/gulp_cleanJSHINT.js",
             "target_path": "gulp_path"
         },
         "gulp_place": {
             "version": "1.5.2",
-            "src": "scripts/gulp_place.js",
+            "src": "bin/gulp_place.js",
             "target_path": "gulp_path"
         },
         "jsonDoc": {
             "version": "0.1.1",
-            "src": "scripts/jsonDoc.js",
+            "src": "bin/jsonDoc.js",
             "target_path": "gulp_path"
         },
         "gulp_task_css": {
             "version": "0.1.1",
-            "src": "scripts/task-css.js",
+            "src": "bin/task-css.js",
             "target_path": "gulp_tasks"
         },
         "gulp_task_default": {
             "version": "1.0.0",
-            "src": "scripts/task-default.js",
+            "src": "bin/task-default.js",
             "target_path": "gulp_tasks"
         },
         "gulp_task_html": {
             "version": "0.1.1",
-            "src": "scripts/task-html.js",
+            "src": "bin/task-html.js",
             "target_path": "gulp_tasks"
         },
         "gulp_task_img": {
             "version": "0.1.1",
-            "src": "scripts/task-img.js",
+            "src": "bin/task-img.js",
             "target_path": "gulp_tasks"
         },
         "gulp_task_javascript": {
             "version": "0.1.1",
-            "src": "scripts/task-javascript.js",
+            "src": "bin/task-javascript.js",
             "target_path": "gulp_tasks"
         },
         "gulp_task_javascript-libs": {
             "version": "0.1.1",
-            "src": "scripts/task-javascript-libs.js",
+            "src": "bin/task-javascript-libs.js",
             "target_path": "gulp_tasks"
         }
     }
