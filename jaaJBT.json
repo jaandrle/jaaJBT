@@ -1,6 +1,7 @@
 {
     "config": {
-        "version": "0.2.2"
+        "version": "0.2.2",
+        "root_url": "https://raw.githubusercontent.com/jaandrle/jaaJBT/master/"
     },
     "scripts": {
         "gulpfile": {
