@@ -1,11 +1,10 @@
 /* jshint esversion: 6,-W097, -W040, node: true, expr: true, undef: true */
 /* node has 5min cahce for requests!!! */
 const /* configs files paths */
-    version= "0.2.2",
-    remote_url= "https://raw.githubusercontent.com/jaandrle/jaaJBT/master/",
+    version= "1.0.0",
     config_key_name= "jaaJBT",
     config_local= "./package.json",
-    config_remote= remote_url+"jaaJBT.json";
+    config_remote_name= "jaaJBT.json";
 const /* dependences */
     fs= require("fs"),
     https= require("https");
@@ -15,27 +14,30 @@ const /* local config, arguments */
     colors= { e: "\x1b[31m", s: "\x1b[32m", w: "\x1b[33m", R: "\x1b[0m" },
     cmd_arguments= process.argv.slice(2);
 
+local_jaaJBT.rename= local_jaaJBT.rename || {};
+
 let spaces= "  ";
 toConsole(`${colors.w}${config_key_name}@v${version}`, "normal", "_info");
 spaces= "    ";
 
 switch (cmd_arguments[0]){
-    case "check":
-        check();
-        break;
+    case "check":   check();        break;
     case "pull":
-    case "update":
-        check(pull);
-        break;
-    default :
-        toConsole("Help", "normal","_help");
+    case "update":  check(pull);    break;
+    default :       toConsole("Help", "normal","_help");
 }
 
 function check(cb){
     if(!local_jaaJBT) return toConsole("Local versions", "warn", "_no_local");
-    get(`${config_remote}?v=${Math.random()}`)
+    Promise.all(Object.keys(local_jaaJBT.resourses).map(key=> `${local_jaaJBT.resourses[key]}${config_remote_name}?v=${Math.random()}`).map(getJSON))
     .then(function(data){
-        const remote_jaaJBT= JSON.parse(data);
+        const remote_jaaJBT= data.reduce(function(acc, curr){
+            const { config: { version, root_url }= {}, scripts }= curr;
+            Object.keys(scripts).forEach(key=> scripts[key].src= root_url+scripts[key].src);
+            if(version) Object.assign(acc.config, { version });
+            Object.assign(acc.scripts, scripts);
+            return acc;
+        }, { config: {}, scripts: {} });
         let results= [];
         if(version!==remote_jaaJBT.config.version) return toConsole(`Update is not possible (new version ${remote_jaaJBT.config.version})`, "error", spaces.repeat(2)+"Your `jaaJBT.js` script must be up-to-date to proper comparing/updating!");
         Object.keys(local_jaaJBT.scripts||{}).forEach(function(key){
@@ -54,8 +56,7 @@ function check(cb){
         toConsole("Versions comparisons", "normal", results.map(([ key, result, color, version ])=> `${spaces.repeat(2)}${key}: ${color}${result}${colors.R}` + (version ? ` (${version})` : "")).join("\n"));
         if(cb) cb(remote_jaaJBT, results);
     })
-    .catch(console.log)
-    .catch(toConsole.bind(null, "Remote versions", "error", "_no_connection"));
+    .catch(err=> (toConsole("Remote versions", "error", "_no_connection"), toConsole(spaces+"Error in", "error", spaces.repeat(3)+err)));
 }
 function pull(remote, results_all){
     const results= results_all.filter(([ _, result ])=> result==="outdated").map(([ key, _1, _2, version ])=> `${key}@v${version.replace(colors.e, "")}`);
@@ -71,8 +72,8 @@ function pull(remote, results_all){
     function toObject(res){ const key= res.split("@v")[0]; return Object.assign({ key }, remote.scripts[key]); }
 }
 function downloadNth(def){
-    const { src, target_path, version }= def;
-    return download(`${remote_url}${src}?v=${version}`, local_jaaJBT.config[target_path]+src.substring(src.lastIndexOf("/")+1), def);
+    const { src, target_path, version, key }= def;
+    return download(`${src}?v=${version}`, local_jaaJBT.config[target_path]+(local_jaaJBT.rename[key] || src.substring(src.lastIndexOf("/")+1)), def);
 }
 function UpdateConfig(results){
     results.forEach(({ key, version })=> local_jaaJBT.scripts[key]= `~${version}`);
@@ -80,7 +81,7 @@ function UpdateConfig(results){
     return results;
 }
 
-function get(url){ return new Promise(function(resolve, reject){ https.get(url, response=> response.on("data", resolve)).on("error", reject); }); }
+function getJSON(url){ return new Promise(function(resolve, reject){ https.get(url, response=> response.on("data", function(data){ try{ resolve(JSON.parse(data)); } catch(e){ reject(url); } })).on("error", reject); }); }
 function download(from, to, share){ return new Promise(function(resolve, reject){
     const file= fs.createWriteStream(to);
     https.get(from, function(response) {

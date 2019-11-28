@@ -9,9 +9,7 @@ const config= (function(){
           { $g, $o }= mapDependencies(Object.assign({}, package_json.dependencies, package_json.devDependencies), $o_default);
     const app= package_json.app_keys_map.reduce((acc, curr)=> (acc[curr[0]]= package_json[curr[1]||curr[0]], acc), {});
     if(!app.folderName) app.folderName= package_json.homepage.substring(package_json.homepage.lastIndexOf("/")+1);
-    const out_config= { gulp, $gulp_task_folder, $g, $o, app, scripts: package_json.scripts, cordova_target_device: package_json.cordova_target_device, error: error() };
-    if(package_json.gulp_files) out_config.files= Object.keys(package_json.gulp_files).reduce((obj, key)=> ( obj[key]= package_json.gulp_files[key].map(v=> v.replace("${directories.bin}", package_json.directories.bin)), obj ), {});
-    return out_config;
+    return { gulp, $gulp_task_folder, $g, $o, app, scripts: package_json.scripts, cordova_target_device: package_json.cordova_target_device, error: error() };
 })();
 /* /CONFIG/ */
 /* \Tasks\ */

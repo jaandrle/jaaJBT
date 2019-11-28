@@ -1,11 +1,11 @@
 {
     "config": {
-        "version": "0.2.2",
+        "version": "0.2.3",
         "root_url": "https://raw.githubusercontent.com/jaandrle/jaaJBT/master/"
     },
     "scripts": {
         "gulpfile": {
-            "version": "0.9.1",
+            "version": "1.0.0",
             "src": "scripts/gulpfile.js",
             "target_path": "root_path"
         },
@@ -23,6 +23,36 @@
             "version": "0.1.1",
             "src": "scripts/jsonDoc.js",
             "target_path": "gulp_path"
+        },
+        "gulp_task_css": {
+            "version": "0.1.0",
+            "src": "scripts/task-css.js",
+            "target_path": "gulp_tasks"
+        },
+        "gulp_task_default": {
+            "version": "0.1.0",
+            "src": "scripts/task-default.js",
+            "target_path": "gulp_tasks"
+        },
+        "gulp_task_html": {
+            "version": "0.1.0",
+            "src": "scripts/task-html.js",
+            "target_path": "gulp_tasks"
+        },
+        "gulp_task_img": {
+            "version": "0.1.0",
+            "src": "scripts/task-img.js",
+            "target_path": "gulp_tasks"
+        },
+        "gulp_task_javascript": {
+            "version": "0.1.0",
+            "src": "scripts/task-javascript.js",
+            "target_path": "gulp_tasks"
+        },
+        "gulp_task_javascript-libs": {
+            "version": "0.1.0",
+            "src": "scripts/task-javascript-libs.js",
+            "target_path": "gulp_tasks"
         }
     }
 }
