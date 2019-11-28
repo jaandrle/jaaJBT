@@ -27,7 +27,7 @@
     },
     "license": "AGPL-3.0",
     "author": "Jan Andrle <andrle.jan@centrum.cz>",
-    "description": "",
+    "description": "Building tools for my projects (for now very naive)",
     "main": "gulpfile.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
@@ -47,14 +47,12 @@
         "gulp": "^4.0.2",
         "gulp-clean-css": "^4.2.0",
         "gulp-concat": ">=2.6.1",
-        "gulp-imagemin": "^6.0.0",
         "gulp-minify": ">=3.1.0",
         "gulp-rename": ">=1.4.0",
         "gulp-replace": ">=1.0.0",
         "gulp-sourcemaps": "^2.6.5",
         "gulp-stylus": ">=2.7.0",
         "gulp-util": ">=3.0.8",
-        "gulp-htmlmin": ">=5.0.1",
         "jshint": "^2.9.7"
     },
     "devDependencies": {
