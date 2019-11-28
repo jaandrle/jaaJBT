@@ -1,10 +1,6 @@
 /* jshint esversion: 6,-W097, -W040, node: true, expr: true */
-/*jsondoc={
-    "version": "1.0.1",
-    "script_name": "gulp_task_default",
-    "root_path": "gulp_tasks"
-}*/
-module.exports= function({gulp, scripts, $g, $o, app, cordova_target_device, error}){
+/* version 1.0.0 */
+module.exports= function({gulp, scripts, $g, $o, app, error}){
     return function(cb){
         const logs= app.directories.gulp+"logs/gulpfile.log";
         $o.fs.readFile(logs, function(err,data){

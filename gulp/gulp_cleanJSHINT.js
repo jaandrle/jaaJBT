@@ -1,9 +1,5 @@
 /* jshint esversion: 6,-W097, -W040, node: true, expr: true, undef: true */
-/*jsondoc={
-    "version": "0.1.2",
-    "script_name": "gulp_cleanJSHINT",
-    "root_path": "gulp_path"
-}*/
+/* version 0.1.1 */
 function parseJSHINT(full_match, left, center, right, eol){
     if(/\/\/gulp\.keep\.line/.test(right)) return left+center+right+eol;
     const out= [left, center, right].map(item=> /\/\*[^\*]*\*\//g.test(item) ? "" : item).join("");//?? || /gulp_place/g.test(item)

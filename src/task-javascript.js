@@ -47,4 +47,4 @@ module.exports= function({gulp, scripts, $g, $o, app, cordova_target_device, err
     function skipPromise(){ }
     function identityPromise(params){ return params; }
 };
-/* "1.0.0" */
+/* ecalp_plug("app.version", "variable") */

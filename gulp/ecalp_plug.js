@@ -1,27 +1,5 @@
 "use stric";
 /* jshint esversion: 6,-W097, -W040, node: true, expr: true, undef: true *//* global module */
-/*jsondoc={
-    "version": "1.5.3",
-    "script_name": "gulp_place",
-    "root_path": "gulp_path",
-    "description": [
-        "Returned function 'gulp_place' must be used in gulp.pipe and replacing 'gulp_place' in source files by another files content or eval inputed data (i.e. variables inside gulpfile).",
-        "In case of file replacing and situation `^    gulp_place('file');` also spaces and new line (and ';' if writted) is replaced (see 'gulp_place_regex').",
-        "The varibale (in case gulp_place('***', 'variable')) is replaced by `'`+***+`'` (means as string)"
-    ],
-    "examples": [
-        "gulp_place('file_path') === gulp_place('file_path', 'file'): replaced by 'file_path' content",
-        "gulp_place('file_path${some_var_inside_gulp}') === gulp_place('file_path${some_var_inside_gulp}', 'file'): replaced by ''file_path'+some_var_inside_gulp' content",
-        "gulp_place('files_subfolder/*.js', 'files') === gulp_place('files_subfolder/*.js', 'blob'): replaced by js files content on 'files_subfolder'",
-        "gulp_place('some_var_inside_gulp', 'variable'): replaced by value of 'some_var_inside_gulp'",
-        "gulp_place('file_path', 'file_once') === only first match will be replaced by file content"
-    ],
-    "depends": [ "gulp-replace", "fs" ],
-    "TODO": [
-        "Refactoring+clearing",
-        "Documenttation + (new) examples"
-    ]
-}*/
 module.exports= function({ gulp_replace= false, fs= false, variable_eval= false, filesCleaner= content=> content }= {}){
     if(!gulp_replace) throw Error("Missing 'gulp-replace' function!");
     if(!fs) throw Error("Missing 'fs' object!");
@@ -29,12 +7,12 @@ module.exports= function({ gulp_replace= false, fs= false, variable_eval= false,
     let /* shared vars */
         files_added= new Set();
     const /* shared consts */
-        gulp_place_regex= /( *)gulp_place\(\s*(?:\"|\')([^\"\']+)(?:\"|\')(?:\s*,\s*(?:\"|\')([^\"\']+)(?:\"|\'))?\s*\)(;?)([^\r\n]*\/\*[^\*]*\*\/)?/g,
+        ecalp_plug_regex= /( *)ecalp_plug\(\s*(?:\"|\')([^\"\']+)(?:\"|\')(?:\s*,\s*(?:\"|\')([^\"\']+)(?:\"|\'))?\s*\)(;?)([^\r\n]*\/\*[^\*]*\*\/)?/g,
         folder_glob_reg= /\*\*\/$/g,
         folder_deep_glob_reg= /\*\*\/\*\*\/$/g;
     
-    return function gulp_place({folder= "js/", string_wrapper= '"'}= {}){
-        return gulp_replace(gulp_place_regex,function(full_match, spaces= "", name= false, type="file", semicol= "", jshint_global= ""){
+    return function ecalp_plug({folder= "js/", string_wrapper= '"'}= {}){
+        return gulp_replace(ecalp_plug_regex,function(full_match, spaces= "", name= false, type="file", semicol= "", jshint_global= ""){
             return parseFileHandler({name, full_match, type, spaces, string_wrapper, semicol, jshint_global});
 
             function parseFileHandler({name, full_match, type, spaces, string_wrapper, semicol, jshint_global}){
@@ -55,7 +33,7 @@ module.exports= function({ gulp_replace= false, fs= false, variable_eval= false,
                 }
             }
             function parseFile(file_data){
-                return file_data.replace(gulp_place_regex, function(full_match, spaces= "", name= false, type="file", semicol= "", jshint_global= ""){
+                return file_data.replace(ecalp_plug_regex, function(full_match, spaces= "", name= false, type="file", semicol= "", jshint_global= ""){
                     return parseFileHandler({name, full_match, type, spaces, string_wrapper, semicol, jshint_global});
                 });
             }

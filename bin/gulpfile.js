@@ -1,5 +1,9 @@
 /* jshint esversion: 6, node: true */
-/* version 1.1.0 */
+/*jsondoc={
+    "version": "1.1.1",
+    "script_name": "gulpfile",
+    "root_path": "root_path"
+}*/
 /* \CONFIG\ */
 const shared_file_path= 
     /* 

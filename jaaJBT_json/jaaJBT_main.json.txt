@@ -1,0 +1,9 @@
+{
+    "config": {
+        "version": "1.0.0",
+        "root_url": "https://raw.githubusercontent.com/jaandrle/jaaJBT/master/"
+    },
+    "scripts": {
+        ${toStructure data}
+    }
+}
