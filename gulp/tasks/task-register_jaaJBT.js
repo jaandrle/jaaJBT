@@ -18,7 +18,7 @@ module.exports= function({app, $gulp_folder, gulp, error, $g, $o, scripts}){
             [ '}' ]
         ].join("\n"));
         generateJSONDoc({
-            files: app.directories.src+"*.js",
+            files: app.directories.bin+"**/**/*.*",
             helpers_functions: require("../../"+jsondoc_modifications+"helpers.js"),
             templateMain: jsondoc_modifications+"jaaJBT_main.json.txt",
             templateItem: jsondoc_modifications+"jaaJBT_nth.json.txt",

@@ -6,7 +6,7 @@ module.exports= {
             return [
                 `"${script_name}": {`,
                 `${spaces.repeat(3)}"version": "${version}",`,
-                `${spaces.repeat(3)}"src": "bin/${file.substring(file.lastIndexOf("/")+1)}",`,
+                `${spaces.repeat(3)}"src": "${file}",`,
                 `${spaces.repeat(3)}"target_path": "${root_path}"`,
                 `${spaces.repeat(2)}}`
             ].join("\n");

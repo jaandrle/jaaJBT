@@ -24,6 +24,11 @@
             "src": "bin/jsonDoc.js",
             "target_path": "gulp_path"
         },
+        "gulp_task_config": {
+            "version": "0.1.0",
+            "src": "bin/task-config.js",
+            "target_path": "gulp_tasks"
+        },
         "gulp_task_css": {
             "version": "0.1.2",
             "src": "bin/task-css.js",
@@ -53,6 +58,26 @@
             "version": "0.1.2",
             "src": "bin/task-javascript.js",
             "target_path": "gulp_tasks"
+        },
+        "config_main_xml": {
+            "version": "0.1.0",
+            "src": "bin/config/config.xml",
+            "target_path": "config_path"
+        },
+        "config_general_android_params_xml": {
+            "version": "0.1.0",
+            "src": "bin/config/config_general/android_params.sub.xml",
+            "target_path": "config_general_path"
+        },
+        "config_general_params_xml": {
+            "version": "0.1.0",
+            "src": "bin/config/config_general/global_params.sub.xml",
+            "target_path": "config_general_path"
+        },
+        "config_general_ios_params_xml": {
+            "version": "0.1.0",
+            "src": "bin/config/config_general/ios_params.sub.xml",
+            "target_path": "config_general_path"
         }
     }
 }
