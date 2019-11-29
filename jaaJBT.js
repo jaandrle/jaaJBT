@@ -1,7 +1,7 @@
 /* jshint esversion: 6,-W097, -W040, node: true, expr: true, undef: true */
 /* node has 5min cahce for requests!!! */
 const /* configs files paths */
-    version= "1.1.0",
+    version= "1.1.1",
     config_key_name= "jaaJBT",
     config_local= "./package.json",
     config_remote_name= "jaaJBT.json";
@@ -14,18 +14,20 @@ const /* local config, arguments */
     colors= { e: "\x1b[31m", s: "\x1b[32m", w: "\x1b[33m", R: "\x1b[0m" },
     cmd_arguments= process.argv.slice(2);
 
-local_jaaJBT.rename= local_jaaJBT.rename || {};
-
 let spaces= "  ";
 toConsole(`${colors.w}${config_key_name}@v${version}`, "normal", "_info");
 spaces= "    ";
 
-if(!local_jaaJBT) return toConsole("Local versions", "warn", "_no_local");
+if(!local_jaaJBT) cmd_arguments[0]+= "_ERROR_";
+else local_jaaJBT.rename= local_jaaJBT.rename || {};
+
 switch (cmd_arguments[0]){
-    case "check":       check();                            break;
-    case "update":      check(update);                      break;
-    case "overview":    overview(cmd_arguments[1]);         break;
-    default :       toConsole("Help", "normal","_help");
+    case "check":       check();                                                break;
+    case "update":      check(update);                                          break;
+    case "overview":    overview(cmd_arguments[1]);                             break;
+    case "check_ERROR_": case "update_ERROR_": case "overview_ERROR_":     
+                        toConsole("Local versions", "warn", "_no_local");       break;
+    default :           toConsole("Help", "normal","_help");
 }
 
 function check(cb){
@@ -94,7 +96,9 @@ function update(remote, results_all){
 
 function downloadNth(def){
     const { src, target_path, version, key }= def;
-    return download(`${src}?v=${version}`, local_jaaJBT.config[target_path]+(local_jaaJBT.rename[key] || src.substring(src.lastIndexOf("/")+1)), def);
+    const local_target_path= local_jaaJBT.config[target_path] || "";
+    const file_name= local_jaaJBT.rename[key] || src.substring(src.lastIndexOf("/")+1);
+    return download(`${src}?v=${version}`, local_target_path+file_name, def);
 }
 function UpdateConfig(results){
     results.forEach(({ key, version })=> local_jaaJBT.scripts[key]= `~${version}`);
@@ -139,7 +143,7 @@ function toConsolePreDefined(color, out_mixed){ return ({
     _help: `
         - check: Connect to remote repository to check new versions of scripts.
         - overview [type]: Lists all available scripts for given resources ('type=package' in form for easy copy-paste to your config).
-        - pull: Connect to remote repository to download all new versions of scripts.`,
+        - update: Connect to remote repository to download all new versions of scripts.`,
     _no_local: `${color}
         There is not registered any local version of any ${config_key_name} script!`,
     _no_connection: `${color}
