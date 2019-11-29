@@ -21,6 +21,38 @@
         [ "homepage" ],
         [ "_BUILD_" ]
     ],
+    "jaaJBT": {
+        "config": {
+            "root_path": "test/",
+            "gulp_path": "test/",
+            "gulp_tasks": "test/",
+            "config_general_path": "test/",
+            "config_path": "test/"
+        },
+        "resourses": [
+            "https://raw.githubusercontent.com/jaandrle/jaaJBT/master/"
+        ],
+        "scripts": {
+            "gulpfile": "~1.1.1",
+            "gulp_cleanJSHINT": "~0.1.2",
+            "gulp_place": "~1.5.3",
+            "jsonDoc": "~0.1.2",
+            "gulp_task_config": "~0.1.0",
+            "gulp_task_css": "~0.1.2",
+            "gulp_task_default": "~1.0.1",
+            "gulp_task_html": "~0.1.2",
+            "gulp_task_img": "~0.1.2",
+            "gulp_task_javascript-libs": "~0.1.2",
+            "gulp_task_javascript": "~0.1.3",
+            "config_main_xml": "~0.1.0",
+            "config_general_android_params_xml": "~0.1.0",
+            "config_general_params_xml": "~0.1.0",
+            "config_general_ios_params_xml": "~0.1.0"
+        },
+        "rename": {
+            "gulpfile": "gulpfile_renamed.js"
+        }
+    },
     "__SECTION_NPM": "",
     "directories": {
         "gulp": "gulp/",

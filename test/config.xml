@@ -1,0 +1,13 @@
+<!-- part version: 0.1.0 -->
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="gulp_place('app.app_id', 'variable')" version="gulp_place('app.version', 'variable')" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>gulp_place('app.name', 'variable')</name>
+    <description>gulp_place('app.description', 'variable')</description>
+    <author email="info@indigo.cz" href="http://indigo.cz">iNDiGOmultimedia</author>
+    gulp_place('config_individual/params.sub.xml', 'file_once')
+    gulp_place('config_general/global_params.sub.xml', 'file_once')
+    gulp_place('config_general/android_params.sub.xml', 'file_once')
+    gulp_place('config_general/ios_params.sub.xml', 'file_once')
+    gulp_place('config_individual/platforms.sub.xml', 'file_once')
+    gulp_place('config_individual/plugins.sub.xml', 'file_once')
+</widget>
