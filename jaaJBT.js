@@ -59,15 +59,19 @@ function overview(type){
         const { scripts }= remote_jaaJBT;
         if(type==="package"){
             toConsole("Lines to `package.json` (without `,` on EOL)", "normal",
-                spaces.repeat(2)+Object.keys(scripts)
-                    .map(key=> `"${key}": "",`)
-                    .join("\n"+spaces.repeat(2))
+                Object.keys(scripts).map(key=> spaces.repeat(2)+`"${key}": "",`).join("\n")
             );
         } else {
             toConsole("Available scripts", "normal",
-                spaces.repeat(2)+Object.keys(scripts)
-                    .map(key=> `${colors.w}${key}${colors.s}@v${scripts[key].version}${colors.R}: ${scripts[key].description || "no description"}`)
-                    .join("\n"+spaces.repeat(2))
+                Object.keys(scripts)
+                    .map(key=> [
+                        `${colors.w}${key}${colors.s}@v${scripts[key].version}${colors.R}`,
+                        ...[
+                            `target_path: "${scripts[key].target_path}"`,
+                            `description: "${scripts[key].description || "-"}"`
+                        ].map(t=> spaces.repeat(2)+t)
+                    ].map(t=> spaces+t).join("\n"))
+                    .map(t=> spaces+t).join("\n")
             );
         }
     })
@@ -134,6 +138,7 @@ function toConsolePreDefined(color, out_mixed){ return ({
     `,
     _help: `
         - check: Connect to remote repository to check new versions of scripts.
+        - overview [type]: Lists all available scripts for given resources ('type=package' in form for easy copy-paste to your config).
         - pull: Connect to remote repository to download all new versions of scripts.`,
     _no_local: `${color}
         There is not registered any local version of any ${config_key_name} script!`,
