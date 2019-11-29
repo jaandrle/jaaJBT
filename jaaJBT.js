@@ -1,7 +1,7 @@
 /* jshint esversion: 6,-W097, -W040, node: true, expr: true, undef: true */
 /* node has 5min cahce for requests!!! */
 const /* configs files paths */
-    version= "1.0.0",
+    version= "1.1.0",
     config_key_name= "jaaJBT",
     config_local= "./package.json",
     config_remote_name= "jaaJBT.json";
@@ -20,26 +20,20 @@ let spaces= "  ";
 toConsole(`${colors.w}${config_key_name}@v${version}`, "normal", "_info");
 spaces= "    ";
 
+if(!local_jaaJBT) return toConsole("Local versions", "warn", "_no_local");
 switch (cmd_arguments[0]){
-    case "check":   check();        break;
-    case "pull":
-    case "update":  check(pull);    break;
+    case "check":       check();                            break;
+    case "update":      check(update);                      break;
+    case "overview":    overview(cmd_arguments[1]);         break;
     default :       toConsole("Help", "normal","_help");
 }
 
 function check(cb){
-    if(!local_jaaJBT) return toConsole("Local versions", "warn", "_no_local");
     Promise.all(local_jaaJBT.resourses.map(res=> `${res}${config_remote_name}?v=${Math.random()}`).map(getJSON))
     .then(function(data){
-        const remote_jaaJBT= data.reduce(function(acc, curr){
-            const { config: { version, root_url }= {}, scripts }= curr;
-            Object.keys(scripts).forEach(key=> scripts[key].src= root_url+scripts[key].src);
-            if(version) Object.assign(acc.config, { version });
-            Object.assign(acc.scripts, scripts);
-            return acc;
-        }, { config: {}, scripts: {} });
+        const remote_jaaJBT= consolidateJSONObjects(data);
         let results= [];
-        if(version!==remote_jaaJBT.config.version) return toConsole(`Update is not possible (new version ${remote_jaaJBT.config.version})`, "error", spaces.repeat(2)+"Your `jaaJBT.js` script must be up-to-date to proper comparing/updating!");
+        if(isNewer(remote_jaaJBT.config.version)) return toConsole(`Update is not possible (new version ${remote_jaaJBT.config.version})`, "error", spaces.repeat(2)+"Your `jaaJBT.js` script must be up-to-date to proper comparing/updating!");
         Object.keys(local_jaaJBT.scripts||{}).forEach(function(key){
             const remote_k= remote_jaaJBT.scripts[key];
             let local_k= local_jaaJBT.scripts[key];
@@ -58,7 +52,28 @@ function check(cb){
     })
     .catch(err=> (toConsole("Remote versions", "error", "_no_connection"), toConsole(spaces+"Error in", "error", spaces.repeat(3)+err)));
 }
-function pull(remote, results_all){
+function overview(type){
+    Promise.all(local_jaaJBT.resourses.map(res=> `${res}${config_remote_name}?v=${Math.random()}`).map(getJSON))
+    .then(function(data){
+        const remote_jaaJBT= consolidateJSONObjects(data);
+        const { scripts }= remote_jaaJBT;
+        if(type==="package"){
+            toConsole("Lines to `package.json` (without `,` on EOL)", "normal",
+                spaces.repeat(2)+Object.keys(scripts)
+                    .map(key=> `"${key}": "",`)
+                    .join("\n"+spaces.repeat(2))
+            );
+        } else {
+            toConsole("Available scripts", "normal",
+                spaces.repeat(2)+Object.keys(scripts)
+                    .map(key=> `${colors.w}${key}${colors.s}@v${scripts[key].version}${colors.R}: ${scripts[key].description || "no description"}`)
+                    .join("\n"+spaces.repeat(2))
+            );
+        }
+    })
+    .catch(err=> (toConsole("Remote versions", "error", "_no_connection"), toConsole(spaces+"Error in", "error", spaces.repeat(3)+err)));
+}
+function update(remote, results_all){
     const results= results_all.filter(([ _, result ])=> result==="outdated").map(([ key, _1, _2, version ])=> `${key}@v${version.replace(colors.e, "")}`);
     if(!results.length) return toConsole("Scripts to download", "normal", spaces.repeat(2)+"Nothing to download");
     arrayToConsole("Scripts to download", "normal", colors.w)(results);
@@ -71,6 +86,8 @@ function pull(remote, results_all){
 
     function toObject(res){ const key= res.split("@v")[0]; return Object.assign({ key }, remote.scripts[key]); }
 }
+
+
 function downloadNth(def){
     const { src, target_path, version, key }= def;
     return download(`${src}?v=${version}`, local_jaaJBT.config[target_path]+(local_jaaJBT.rename[key] || src.substring(src.lastIndexOf("/")+1)), def);
@@ -92,6 +109,21 @@ function download(from, to, share){ return new Promise(function(resolve, reject)
         reject(err.message);
     });
 });}
+
+function consolidateJSONObjects(data){
+    return data.reduce(function(acc, curr){
+        const { config: { version, root_url }= {}, scripts }= curr;
+        Object.keys(scripts).forEach(key=> scripts[key].src= root_url+scripts[key].src);
+        if(version&&isNewer(version, acc.config.version)) Object.assign(acc.config, { version });
+        Object.assign(acc.scripts, scripts);
+        return acc;
+    }, { config: { version: "0.0.0" }, scripts: {} });
+}
+function isNewer(to_check, to_compare_with= version){
+    const to_compare_with_arr= to_compare_with.split(".").map(Number);
+    return to_check.split(".").map(Number).map((d,i)=> d-to_compare_with_arr[i]).map(d=> d===0 ? 0 : (d<0 ? -1 : 1)).map((d,i)=> Math.pow(10, 2-i)*d).reduce((acc, curr)=> acc+curr, 0)>0;
+}
+
 
 function saveConfig(){ fs.writeFileSync(config_local, JSON.stringify(package_json, null, "    ")); }
 function arrayToConsole(cmd, type, color){ return arr=> toConsole(cmd, type, arr.map(v=> spaces.repeat(2)+color+v).join("\n")); }

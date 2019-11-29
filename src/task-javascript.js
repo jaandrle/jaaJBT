@@ -1,6 +1,6 @@
 /* jshint esversion: 6,-W097, -W040, node: true, expr: true */
 /*jsondoc={
-    "version": "0.1.2",
+    "version": "0.1.3",
     "script_name": "gulp_task_javascript",
     "root_path": "gulp_tasks"
 }*/
@@ -47,4 +47,3 @@ module.exports= function({gulp, scripts, $g, $o, app, cordova_target_device, err
     function skipPromise(){ }
     function identityPromise(params){ return params; }
 };
-/* ecalp_plug("app.version", "variable") */
