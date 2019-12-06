@@ -2,6 +2,7 @@
 /*jsondoc={
     "version": "0.1.2",
     "script_name": "jsonDoc",
+    "description": "Naive script for searching JSONs for given files and generating documentations based on templates. More description __TBD__.",
     "root_path": "gulp_path"
 }*/
 module.exports= function initGenerateJSONDoc({

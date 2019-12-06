@@ -2,6 +2,7 @@
 /*jsondoc={
     "version": "1.1.1",
     "script_name": "gulpfile",
+    "description": "Common gulpfile for my projects. It dynamically loads configuration from `package.json` and tasks from `./gulp/tasks/`. More description __TBD__.",
     "root_path": "root_path"
 }*/
 /* \CONFIG\ */

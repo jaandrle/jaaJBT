@@ -2,6 +2,7 @@
 /*jsondoc={
     "version": "0.1.2",
     "script_name": "gulp_task_img",
+    "description": "Gulp task for processing images in `img/` subdirectory inside `app.directories.src`. More description __TBD__.",
     "root_path": "gulp_tasks"
 }*/
 module.exports= function({gulp, scripts, $g, $o, app, cordova_target_device, error}){

@@ -2,6 +2,7 @@
 /*jsondoc={
     "version": "0.1.2",
     "script_name": "gulp_cleanJSHINT",
+    "description": "Utility for using in combination with `gulp_place` (see `filesCleaner` key in argument object).",
     "root_path": "gulp_path"
 }*/
 function parseJSHINT(full_match, left, center, right, eol){

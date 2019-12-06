@@ -2,6 +2,7 @@
 /*jsondoc={
     "version": "0.1.0",
     "script_name": "gulp_task_config",
+    "description": "Gulp task for generating cordovas `config.xml`. More description __TBD__.",
     "root_path": "gulp_tasks"
 }*/
 module.exports= function({gulp, scripts, $g, $o, app, cordova_target_device, error}){

@@ -2,6 +2,7 @@
 /*jsondoc={
     "version": "1.0.1",
     "script_name": "gulp_task_default",
+    "description": "Main/default gulp task for serializing others tasks scripts. More description __TBD__.",
     "root_path": "gulp_tasks"
 }*/
 module.exports= function({gulp, scripts, $g, $o, app, cordova_target_device, error}){
