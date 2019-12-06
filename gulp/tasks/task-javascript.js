@@ -21,9 +21,6 @@ module.exports= function({gulp, scripts, $g, $o, app, cordova_target_device, err
                 let main_stream= gulp.src([ `${folder}${files_pattern}`, `!${folder}${files_not_pattern}` ])
                         .pipe(ecalp_plug({ folder, string_wrapper: '"' }))
                         .pipe($g.replace(/[^\n]*(\/\*\s*gulp\s\*\/)?\/\*\s*global ecalp_plug\s*\*\/\r?\n/g,""));
-        
-                if(app.external_publication){ main_stream= main_stream.pipe($g.minify_js({ ext: { min: ".js" }, noSource: true, mangle: true, compress: { conditionals: true, evaluate: true } })); }
-        
                 main_stream
                     .on('error', error.handler)
                     .on('data', function({ basename }= {}){ if(skip_final_jshint.indexOf(basename)===-1) out_files.push(basename); })

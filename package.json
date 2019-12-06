@@ -5,18 +5,20 @@
     "name": "jaajbt",
     "version": "1.1.1",
     "build": "0001",
+    "external_publication": true,
     "language": "EN",
     "_BUILD_": "Tento klic se meni v prubehu buildu dle `gulp_place('app._BUILD_= …', 'eval')!`",
     "cordova_target_device": " ",
     "__Comment__sequence": "exclamation mark (!) on the start of task name means to escape it",
     "sequence": [
         "javascript",
+        "scss",
         "xml",
         "register_jaaJBT",
         "xml_clean"
     ],
     "app_keys_map": [
-        [ "name", "fullName" ], [ "app_id", "name" ], [ "version" ], [ "build" ],
+        [ "name", "fullName" ], [ "app_id", "name" ], [ "version" ], [ "build" ], [ "external_publication" ],
         [ "description" ], [ "directories" ], [ "sequence" ],
         [ "homepage" ],
         [ "_BUILD_" ]
