@@ -1,7 +1,7 @@
 /* jshint esversion: 6,-W097, -W040, node: true, expr: true, undef: true */
 /* node has 5min cahce for requests!!! */
 const /* configs files paths */
-    version= "1.1.1",
+    version= "1.1.2",
     config_key_name= "jaaJBT",
     config_local= "./package.json",
     config_remote_name= "jaaJBT.json";
@@ -24,7 +24,7 @@ else local_jaaJBT.rename= local_jaaJBT.rename || {};
 switch (cmd_arguments[0]){
     case "check":       check();                                                break;
     case "update":      check(update);                                          break;
-    case "overview":    overview(cmd_arguments[1]);                             break;
+    case "overview":    overview(cmd_arguments.slice(1));                       break;
     case "check_ERROR_": case "update_ERROR_": case "overview_ERROR_":     
                         toConsole("Local versions", "warn", "_no_local");       break;
     default :           toConsole("Help", "normal","_help");
@@ -54,18 +54,23 @@ function check(cb){
     })
     .catch(err=> (toConsole("Remote versions", "error", "_no_connection"), toConsole(spaces+"Error in", "error", spaces.repeat(3)+err)));
 }
-function overview(type){
+function overview(types){
+    const getKeys= types.indexOf("diff")===-1 ?
+        scripts=> Object.keys(scripts) :
+        scripts=> Object.keys(scripts).filter((local_keys=> function(key){ return local_keys.indexOf(key)===-1; })(Object.keys(local_jaaJBT.scripts)));
+    const no_scripts_text= spaces.repeat(2)+"No scripts for your filter.";
+
     Promise.all(local_jaaJBT.resourses.map(res=> `${res}${config_remote_name}?v=${Math.random()}`).map(getJSON))
     .then(function(data){
         const remote_jaaJBT= consolidateJSONObjects(data);
         const { scripts }= remote_jaaJBT;
-        if(type==="package"){
+        if(types.indexOf("package")!==-1){
             toConsole("Lines to `package.json` (without `,` on EOL)", "normal",
-                Object.keys(scripts).map(key=> spaces.repeat(2)+`"${key}": "",`).join("\n")
+                getKeys(scripts).map(key=> spaces.repeat(2)+`"${key}": "",`).join("\n") || no_scripts_text
             );
         } else {
             toConsole("Available scripts", "normal",
-                Object.keys(scripts)
+                getKeys(scripts)
                     .map(key=> [
                         `${colors.w}${key}${colors.s}@v${scripts[key].version}${colors.R}`,
                         ...[
@@ -73,7 +78,7 @@ function overview(type){
                             `description: "${scripts[key].description || "-"}"`
                         ].map(t=> spaces.repeat(2)+t)
                     ].map(t=> spaces+t).join("\n"))
-                    .map(t=> spaces+t).join("\n")
+                    .map(t=> spaces+t).join("\n") || no_scripts_text
             );
         }
     })
@@ -141,9 +146,14 @@ function toConsolePreDefined(color, out_mixed){ return ({
     Author: <${"zc.murtnec@naj.elrdna".split("").reverse().join("")}>
     `,
     _help: `
-        - check: Connect to remote repository to check new versions of scripts.
-        - overview [type]: Lists all available scripts for given resources ('type=package' in form for easy copy-paste to your config).
-        - update: Connect to remote repository to download all new versions of scripts.`,
+        - ${colors.s}check${colors.R}: Connect to remote repository to check new versions of scripts.
+        - ${colors.s}overview ${colors.w}[type] [all|diff]${colors.R}:
+            a) ${colors.w}[type]${colors.R}: Lists all available scripts for given resources
+                ('type=package' in form for easy copy-paste to your config).
+            b) ${colors.w}[all|diff]${colors.R}: List all available scripts in remote repository
+                or only not included locally.
+            c) NOTE: It doesn't matter on order — e.g. \`package diff\`=\`diff package\`.
+        - ${colors.s}update${colors.R}: Connect to remote repository to download all new versions of scripts.`,
     _no_local: `${color}
         There is not registered any local version of any ${config_key_name} script!`,
     _no_connection: `${color}
