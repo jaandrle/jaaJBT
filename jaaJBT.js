@@ -52,7 +52,7 @@ function check(cb){
         toConsole("Versions comparisons", "normal", results.map(([ key, result, color, version ])=> `${spaces.repeat(2)}${key}: ${color}${result}${colors.R}` + (version ? ` (${version})` : "")).join("\n"));
         if(cb) cb(remote_jaaJBT, results);
     })
-    .catch(err=> (toConsole("Remote versions", "error", "_no_connection"), toConsole(spaces+"Error in", "error", spaces.repeat(3)+err)));
+    .catch(handleErrorJSON);
 }
 function overview(types){
     const getKeys= types.indexOf("diff")===-1 ?
@@ -82,7 +82,7 @@ function overview(types){
             );
         }
     })
-    .catch(err=> (toConsole("Remote versions", "error", "_no_connection"), toConsole(spaces+"Error in", "error", spaces.repeat(3)+err)));
+    .catch(handleErrorJSON);
 }
 function update(remote, results_all){
     const results= results_all.filter(([ _, result ])=> result==="outdated").map(([ key, _1, _2, version ])=> `${key}@v${version.replace(colors.e, "")}`);
@@ -111,7 +111,18 @@ function UpdateConfig(results){
     return results;
 }
 
-function getJSON(url){ return new Promise(function(resolve, reject){ https.get(url, response=> response.on("data", function(data){ try{ resolve(JSON.parse(data)); } catch(e){ reject(url); } })).on("error", reject); }); }
+function getJSON(url){ return new Promise(function(resolve, reject){ 
+    https.get(url, function(response){
+        let data= "";
+        response.on("data", chunk=> data+= chunk);
+        response.on("end", function(){ try{ resolve(JSON.parse(data)); } catch(e){ reject(url, e); } });
+    }).on("error", reject);
+});}
+function handleErrorJSON(url, error){
+    toConsole("Remote versions", "error", "_no_connection");
+    toConsole(spaces+"Error in", "error", spaces.repeat(3)+url);
+    toConsole(spaces+"Error message", "error", spaces.repeat(3)+error);
+}
 function download(from, to, share){ return new Promise(function(resolve, reject){
     const file= fs.createWriteStream(to);
     https.get(from, function(response) {
