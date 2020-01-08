@@ -29,7 +29,8 @@
             "gulp_path": "test/",
             "gulp_tasks": "test/",
             "config_general_path": "test/",
-            "config_path": "test/"
+            "config_path": "test/",
+            "scss_atoms": "test/"
         },
         "resourses": [
             "https://raw.githubusercontent.com/jaandrle/jaaJBT/master/"
