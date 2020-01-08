@@ -15,6 +15,7 @@
         "scss",
         "xml",
         "register_jaaJBT",
+        "generateReadme",
         "xml_clean"
     ],
     "app_keys_map": [
