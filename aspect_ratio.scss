@@ -1,0 +1,28 @@
+/*jsondoc={
+    "version": "1.0.0",
+    "script_name": "aspect_ratio_scss",
+    "root_path": "scss_atoms",
+    "description": [
+        "Pomocné utility pro zachování poměru (např. obrázku) pomocí vlastně `padding-bottom` triku a absolutního pozicování uvnitř relativního rodiče.",
+        "Zdroje/inspirace:",
+        "   - https://www.vzhurudolu.cz/prirucka/css-pomer-stran",
+        "   - https://codepen.io/airen/pen/BZQgRb"
+    ],
+    "examples": [
+        "HTML:",
+        "<p style='--aspect-ratio:16/9'>",
+        "    <img src='image.jpg' width='320' height='180' alt='Image…'>",
+        "</p>"
+    ]
+}*/
+[style*="--aspect-ratio"] {
+    position: relative;
+    padding-bottom: calc(100% / (var(--aspect-ratio)));  
+    
+    & > :first-child {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+    }
+}
