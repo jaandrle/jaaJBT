@@ -8,6 +8,7 @@ module.exports= function({app, $gulp_folder, gulp, error, $g, $o, scripts}){
     return function(cb){
         generateJSONDoc({
             files: app.directories.bin+"**/**/*.*",
+            helpers_functions: require("../../"+jsondoc_modifications+"helpers.js"),
             templateMain: jsondoc_modifications+"README_main.md",
             templateItem: jsondoc_modifications+"README_nth.md",
         })()
