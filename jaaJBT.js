@@ -1,7 +1,7 @@
 /* jshint esversion: 6,-W097, -W040, node: true, expr: true, undef: true */
 /* node has 5min cahce for requests!!! */
 const /* configs files paths */
-    version= "2.0.0",
+    version= "2.0.1",
     config_key_name= "jaaJBT",
     config_remote_name= "jaaJBT.json";
 const /* dependences */
@@ -26,6 +26,7 @@ const {
         case "update":      return check().then(update);
         case "packages":    return overview(filter).then(overview_printPackagesNames);
         case "overview":    return overview(filter).then(overview_printPackagesWithDetails);
+        case "create":      package_json.jaaJBT= local_jaaJBT; try{ return Promise.resolve(saveConfig()); } catch (e){ return Promise.reject(e); } break;
         case "error":       return Promise.reject(toConsole("Local versions", "warn", "_no_local"));
         default :           return Promise.resolve(toConsole("Help", "normal","_help"));
     }
@@ -35,6 +36,7 @@ const {
 .catch(()=> process.exit(1));
 
 function getResourses(){
+    if(!local_jaaJBT.resourses.length) return Promise.reject("Local file config. No `resourses` defined.");
     return Promise.all(local_jaaJBT.resourses.map(res=> `${res}${config_remote_name}?v=${Math.random()}`).map(getJSON));
 }
 function check(){
@@ -124,12 +126,11 @@ function getJSON(url){ return new Promise(function(resolve, reject){
     https.get(url, function(response){
         let data= "";
         response.on("data", chunk=> data+= chunk);
-        response.on("end", function(){ try{ resolve(JSON.parse(data)); } catch(e){ reject(url, e); } });
+        response.on("end", function(){ toConsole(url, "", "Connection estabisled"); try{ resolve(JSON.parse(data)); } catch(e){ reject(e); } });
     }).on("error", reject);
 });}
-function handleErrorJSON(url, error){
+function handleErrorJSON(error){
     toConsole("Remote versions", "error", "_no_connection");
-    toConsole(spaces+"Error in", "error", spaces.repeat(3)+url);
     toConsole(spaces+"Error message", "error", spaces.repeat(3)+error);
 }
 function download(from, to, share){ return new Promise(function(resolve, reject){
@@ -161,7 +162,7 @@ function isNewer(to_check, to_compare_with= version){
 function getProgramParams({ script_arguments, default_config }){
     let out= {};
     let curr_key;
-    const types= [ "check", "update", "overview", "packages" ];
+    const types= [ "check", "update", "overview", "packages", "create" ];
     script_arguments.forEach(function(arg){
         switch(true){
             case Boolean(curr_key) :         out[curr_key]= arg; curr_key= undefined; break;
@@ -176,9 +177,14 @@ function getProgramParams({ script_arguments, default_config }){
         out.package_json= JSON.parse(fs.readFileSync(out.config));
         out.local_jaaJBT= out.package_json[config_key_name];
     } catch(e){
-        toConsole("Load config — error", "error", "");
-        out.local_jaaJBT= undefined;
+        if(out.type!=="create"){
+            toConsole("Load config — error", "error", spaces.repeat(3)+"You can use `create` argument for creating empty config file.");
+            out.local_jaaJBT= undefined;
+        } else {
+            out.package_json= {};
+        }
     }
+    if(out.type==="create"&&!out.local_jaaJBT) out.local_jaaJBT= { resourses: [], scripts: {} };
     if(!out.local_jaaJBT) out.operation= "error";
     else{
         out.operation= out.type;
