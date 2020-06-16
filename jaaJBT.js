@@ -1,37 +1,44 @@
 /* jshint esversion: 6,-W097, -W040, node: true, expr: true, undef: true */
 /* node has 5min cahce for requests!!! */
 const /* configs files paths */
-    version= "1.1.2",
+    version= "2.0.0",
     config_key_name= "jaaJBT",
-    config_local= "./package.json",
     config_remote_name= "jaaJBT.json";
 const /* dependences */
     fs= require("fs"),
-    https= require("https");
-const /* local config, arguments */
-    package_json= JSON.parse(fs.readFileSync(config_local)),
-    local_jaaJBT= package_json[config_key_name],
-    colors= { e: "\x1b[31m", s: "\x1b[32m", w: "\x1b[33m", R: "\x1b[0m" },
-    cmd_arguments= process.argv.slice(2);
-
-let spaces= "  ";
+    https= require("https"),
+    colors= { e: "\x1b[31m", s: "\x1b[32m", w: "\x1b[33m", R: "\x1b[0m" };
+let spaces= "   ";
 toConsole(`${colors.w}${config_key_name}@v${version}`, "normal", "_info");
-spaces= "    ";
 
-if(!local_jaaJBT) cmd_arguments[0]+= "_ERROR_";
-else local_jaaJBT.rename= local_jaaJBT.rename || {};
+const {
+    operation, filter,
+    package_json,
+    config: config_local,
+    local_jaaJBT
+}= getProgramParams({
+    script_arguments: process.argv.slice(1),
+    default_config: "./package.json"
+});
+(function(){
+    switch (operation){
+        case "check":       return check();
+        case "update":      return check().then(update);
+        case "packages":    return overview(filter).then(overview_printPackagesNames);
+        case "overview":    return overview(filter).then(overview_printPackagesWithDetails);
+        case "error":       return Promise.reject(toConsole("Local versions", "warn", "_no_local"));
+        default :           return Promise.resolve(toConsole("Help", "normal","_help"));
+    }
+})()
+//.catch(console.log)
+.then(()=> process.exit())
+.catch(()=> process.exit(1));
 
-switch (cmd_arguments[0]){
-    case "check":       check();                                                break;
-    case "update":      check(update);                                          break;
-    case "overview":    overview(cmd_arguments.slice(1));                       break;
-    case "check_ERROR_": case "update_ERROR_": case "overview_ERROR_":     
-                        toConsole("Local versions", "warn", "_no_local");       break;
-    default :           toConsole("Help", "normal","_help");
+function getResourses(){
+    return Promise.all(local_jaaJBT.resourses.map(res=> `${res}${config_remote_name}?v=${Math.random()}`).map(getJSON));
 }
-
-function check(cb){
-    Promise.all(local_jaaJBT.resourses.map(res=> `${res}${config_remote_name}?v=${Math.random()}`).map(getJSON))
+function check(){
+    return getResourses()
     .then(function(data){
         const remote_jaaJBT= consolidateJSONObjects(data);
         let results= [];
@@ -50,46 +57,48 @@ function check(cb){
             results.push([ key, ...result, version ]);
         });
         toConsole("Versions comparisons", "normal", results.map(([ key, result, color, version ])=> `${spaces.repeat(2)}${key}: ${color}${result}${colors.R}` + (version ? ` (${version})` : "")).join("\n"));
-        if(cb) cb(remote_jaaJBT, results);
+        return { remote: remote_jaaJBT, results_all: results };
     })
     .catch(handleErrorJSON);
 }
-function overview(types){
-    const getKeys= types.indexOf("diff")===-1 ?
+function overview(filter= ""){
+    const getKeys= filter==="all" ?
         scripts=> Object.keys(scripts) :
-        scripts=> Object.keys(scripts).filter((local_keys=> function(key){ return local_keys.indexOf(key)===-1; })(Object.keys(local_jaaJBT.scripts)));
+        scripts=> Object.keys(scripts).filter((( local_keys, compare )=> function(key){ return compare(local_keys.indexOf(key)); })(Object.keys(local_jaaJBT.scripts), filter==="diff" ? v=> v===-1 : v=> v!==-1));
     const no_scripts_text= spaces.repeat(2)+"No scripts for your filter.";
 
-    Promise.all(local_jaaJBT.resourses.map(res=> `${res}${config_remote_name}?v=${Math.random()}`).map(getJSON))
+    return getResourses()
     .then(function(data){
         const remote_jaaJBT= consolidateJSONObjects(data);
         const { scripts }= remote_jaaJBT;
-        if(types.indexOf("package")!==-1){
-            toConsole("Lines to `package.json` (without `,` on EOL)", "normal",
-                getKeys(scripts).map(key=> spaces.repeat(2)+`"${key}": "",`).join("\n") || no_scripts_text
-            );
-        } else {
-            toConsole("Available scripts", "normal",
-                getKeys(scripts)
-                    .map(key=> [
-                        `${colors.w}${key}${colors.s}@v${scripts[key].version}${colors.R}`,
-                        ...[
-                            `target_path: "${scripts[key].target_path}"`,
-                            `description: "${scripts[key].description || "-"}"`
-                        ].map(t=> spaces.repeat(2)+t)
-                    ].map(t=> spaces+t).join("\n"))
-                    .map(t=> spaces+t).join("\n") || no_scripts_text
-            );
-        }
+        return { scripts, getKeys, no_scripts_text };
     })
     .catch(handleErrorJSON);
 }
-function update(remote, results_all){
+function overview_printPackagesWithDetails({ scripts, getKeys, no_scripts_text }){
+    return toConsole("Available scripts", "normal",
+        getKeys(scripts)
+            .map(key=> [
+                `${colors.w}${key}${colors.s}@v${scripts[key].version}${colors.R}`,
+                ...[
+                    `target_path: "${scripts[key].target_path}"`,
+                    `description: "${scripts[key].description || "-"}"`
+                ].map(t=> spaces.repeat(2)+t)
+            ].map(t=> spaces+t).join("\n"))
+            .map(t=> spaces+t).join("\n") || no_scripts_text
+    );
+}
+function overview_printPackagesNames({ scripts, getKeys, no_scripts_text }){
+    return toConsole("Lines to `jaaJBT` section (without `,` on EOL)", "normal",
+        getKeys(scripts).map(key=> spaces.repeat(2)+`"${key}": "",`).join("\n") || no_scripts_text
+    );
+}
+function update({ remote, results_all }){
     const results= results_all.filter(([ _, result ])=> result==="outdated").map(([ key, _1, _2, version ])=> `${key}@v${version.replace(colors.e, "")}`);
     if(!results.length) return toConsole("Scripts to download", "normal", spaces.repeat(2)+"Nothing to download");
     arrayToConsole("Scripts to download", "normal", colors.w)(results);
 
-    Promise.all(results.map(toObject).map(downloadNth))
+    return Promise.all(results.map(toObject).map(downloadNth))
     .then(UpdateConfig)
     .then(results=> results.map(({ target_full })=> target_full))
     .then(arrayToConsole("Download — successfull", "normal", colors.s))
@@ -149,22 +158,54 @@ function isNewer(to_check, to_compare_with= version){
 }
 
 
+function getProgramParams({ script_arguments, default_config }){
+    let out= {};
+    let curr_key;
+    const types= [ "check", "update", "overview", "packages" ];
+    script_arguments.forEach(function(arg){
+        switch(true){
+            case Boolean(curr_key) :         out[curr_key]= arg; curr_key= undefined; break;
+            case types.indexOf(arg)!==-1 :   out.type= arg; break;
+            case "--"===arg.slice(0, 2) :    curr_key= arg.slice(2); break;
+            default :                        return false;
+        }
+        return true;
+    });
+    if(!out.config) out.config= default_config;
+    try{
+        out.package_json= JSON.parse(fs.readFileSync(out.config));
+        out.local_jaaJBT= out.package_json[config_key_name];
+    } catch(e){
+        toConsole("Load config — error", "error", "");
+        out.local_jaaJBT= undefined;
+    }
+    if(!out.local_jaaJBT) out.operation= "error";
+    else{
+        out.operation= out.type;
+        if(!out.local_jaaJBT.rename) out.local_jaaJBT.rename= {};
+        if(!out.local_jaaJBT.config) out.local_jaaJBT.config= {};
+    }
+    return out;
+}
+
 function saveConfig(){ fs.writeFileSync(config_local, JSON.stringify(package_json, null, "    ")); }
 function arrayToConsole(cmd, type, color){ return arr=> toConsole(cmd, type, arr.map(v=> spaces.repeat(2)+color+v).join("\n")); }
 function toConsole(cmd, type, out_mixed){ const color= colors[type.charAt(0)]||""; return console.log(`${spaces}${cmd}: ${toConsolePreDefined(color, out_mixed)||"\n"+color+out_mixed}${colors.R}`); }
 function toConsolePreDefined(color, out_mixed){ return ({
-    _info: `${color}
-    Author: <${"zc.murtnec@naj.elrdna".split("").reverse().join("")}>
+    _info: `${color}<${"zc.murtnec@naj.elrdna".split("").reverse().join("")}>
     `,
     _help: `
-        - ${colors.s}check${colors.R}: Connect to remote repository to check new versions of scripts.
-        - ${colors.s}overview ${colors.w}[type] [all|diff]${colors.R}:
-            a) ${colors.w}[type]${colors.R}: Lists all available scripts for given resources
-                ('type=package' in form for easy copy-paste to your config).
-            b) ${colors.w}[all|diff]${colors.R}: List all available scripts in remote repository
-                or only not included locally.
-            c) NOTE: It doesn't matter on order — e.g. \`package diff\`=\`diff package\`.
-        - ${colors.s}update${colors.R}: Connect to remote repository to download all new versions of scripts.`,
+        Usage: node jaaJBT.js [::params::] [::action::] [::params::]
+        - ${colors.s}::action::${colors.R}
+            - ${colors.s}check${colors.R}: Connect to remote repository to check new versions of scripts.
+            - ${colors.s}overview ${colors.w}[--filter]${colors.R}: Lists all available scripts for given resources
+            - ${colors.s}packages ${colors.w}[--filter]${colors.R}: As 'overview', but in form for easy copy-paste
+                    to your config).
+            - ${colors.s}update${colors.R}: Connect to remote repository to download all new versions of scripts.
+        - ${colors.s}::params::${colors.R}
+            - ${colors.s}--filter${colors.R}: [all|union|diff] List all available scripts in remote repository (default)
+                    or only (not) included locally.
+            - ${colors.s}--config${colors.R}: Where is the config file stored (default './package.json').`,
     _no_local: `${color}
         There is not registered any local version of any ${config_key_name} script!`,
     _no_connection: `${color}
