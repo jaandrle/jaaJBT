@@ -1,6 +1,6 @@
 /* jshint esversion: 6, node: true */
 /*jsondoc={
-    "version": "1.1.2",
+    "version": "1.1.3",
     "script_name": "gulpfile",
     "description": "Common gulpfile for my projects. It dynamically loads configuration from `package.json` and tasks from `./gulp/tasks/`. More description __TBD__.",
     "root_path": "root_path"
@@ -22,7 +22,7 @@ const config= (function(){
           package_json= JSON.parse($o_default.fs.readFileSync('./package.json')),
           shared= $o_default.fs.existsSync(shared_file_path) ? JSON.parse($o_default.fs.readFileSync(shared_file_path)) : shared_default,
           { $g, $o }= mapDependencies(Object.assign({}, package_json.dependencies, package_json.devDependencies), $o_default);
-    const app= (package_json.app_keys_map||[ ["name"], ["version"] ]).reduce((acc, curr)=> (acc[curr[0]]= package_json[curr[1]||curr[0]], acc), { shared });
+    const app= (package_json.app_keys_map||[ ["name"], ["version"], ["directories"] ]).reduce((acc, curr)=> (acc[curr[0]]= package_json[curr[1]||curr[0]], acc), { shared });
     if(!app.folderName) app.folderName= package_json.homepage.substring(package_json.homepage.lastIndexOf("/")+1);
     return { gulp, $gulp_task_folder, $g, $o, app, scripts: package_json.scripts, cordova_target_device: package_json.cordova_target_device, error: error() };
 })();
