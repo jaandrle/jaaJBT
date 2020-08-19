@@ -1,7 +1,7 @@
 "use stric";
-/* jshint esversion: 6,-W097, -W040, node: true, expr: true, undef: true *//* global module */
+/* jshint esversion: 6,-W097, -W040, node: true, expr: true, undef: true, maxparams: 6, maxcomplexity: 13 *//* global module */
 /*jsondoc={
-    "version": "1.5.3",
+    "version": "1.5.4",
     "script_name": "gulp_place",
     "root_path": "gulp_path",
     "description": [

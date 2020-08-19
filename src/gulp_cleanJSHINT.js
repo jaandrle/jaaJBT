@@ -1,6 +1,6 @@
-/* jshint esversion: 6,-W097, -W040, node: true, expr: true, undef: true */
+/* jshint esversion: 6,-W097, -W040, node: true, expr: true, undef: true, maxparams: 5 */
 /*jsondoc={
-    "version": "0.1.2",
+    "version": "0.1.3",
     "script_name": "gulp_cleanJSHINT",
     "description": "Utility for using in combination with `gulp_place` (see `filesCleaner` key in argument object).",
     "root_path": "gulp_path"
