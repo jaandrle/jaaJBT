@@ -1,7 +1,7 @@
 /* jshint esversion: 6,-W097, -W040, node: true, expr: true, undef: true */
 /* node has 5min cahce for requests!!! */
 const /* configs files paths */
-    version= "2.0.1",
+    version= "2.0.2",
     config_key_name= "jaaJBT",
     config_remote_name= "jaaJBT.json";
 const /* dependences */
@@ -135,7 +135,7 @@ function handleErrorJSON(error){
 }
 function download(from, to, share){ return new Promise(function(resolve, reject){
     const file= fs.createWriteStream(to);
-    https.get(from, function(response) {
+    https.get(from, { headers: { 'Cache-Control': 'no-cache' } }, function(response) {
         response.pipe(file);
         file.on('finish', ()=> file.close(()=> resolve(Object.assign( { src_full: from, target_full: to }, share ))) /* close() is async, call cb after close completes. */);
     }).on('error', function(err) { // Handle errors
