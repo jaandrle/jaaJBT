@@ -1,0 +1,13 @@
+{
+    "include": [
+        "src/**/*",
+        "src/*",
+        "gulp/gulp_place.type.js"
+    ],
+    "compilerOptions": {
+        "target": "ES6"
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}

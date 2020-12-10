@@ -1,0 +1,19 @@
+/*jsondoc={
+    "version": "1.0.0",
+    "script_name": "jsconfig",
+    "description": "Just `jsconfig.json` config primary for VS Code editor.",
+    "root_path": "root"
+}*/
+{
+    "include": [
+        "src/**/*",
+        "src/*",
+        "gulp/gulp_place.type.js"
+    ],
+    "compilerOptions": {
+        "target": "ES6"
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}

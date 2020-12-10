@@ -37,6 +37,11 @@ The varibale (in case gulp_place('***', 'variable')) is replaced by `'`+***+`'` 
 
 [Link to source](bin/gulp_place.js)
 
+#### gulp_place_type
+Temporaly workaround for type definition for [jaandrle/gulp-place](https://github.com/jaandrle/gulp-place).
+
+[Link to source](bin/gulp_place.type.js)
+
 #### jsonDoc
 Naive script for searching JSONs for given files and generating documentations based on templates. More description __TBD__.
 
@@ -95,6 +100,16 @@ There is also possibility to force different current work directory by defining 
 undefined
 
 [Link to source](bin/config/config.xml)
+
+#### jsconfig
+Just `jsconfig.json` config primary for VS Code editor.
+
+[Link to source](bin/non_cordova/jsconfig.json)
+
+#### gulp_task_javascript_lib
+Gulp task for processing `*.js` in `app.directories.src`. It also validate non `*.min.js` output files (in `app.directories.bin`). More description __TBD__.
+
+[Link to source](bin/non_cordova/task-javascript.js)
 
 #### config_general_android_params_xml
 undefined
