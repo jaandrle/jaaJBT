@@ -1,13 +1,13 @@
 /* jshint esversion: 6,-W097, -W040, node: true, expr: true */
 /*jsondoc={
-    "version": "0.1.4",
+    "version": "0.1.5",
     "script_name": "gulp_task_javascript_lib",
     "description": "Gulp task for processing `*.js` in `app.directories.src`. It also validate non `*.min.js` output files (in `app.directories.bin`). More description __TBD__.",
     "root_path": "gulp_tasks"
 }*/
 module.exports= function({gulp, scripts, $g, $o, app, cordova_target_device, error}){
     const /* files source and destination */
-        [ folder, files_pattern, files_not_pattern ]= [ app.directories.src+"**/", "*.js", "*.sub.js" ],
+        [ folder, files_pattern, files_not_pattern ]= [ app.directories.src, "*.js", "*.sub.js" ],
         destination= app.directories.bin;
     const [jshint_cmd, ...jshint_rest]= scripts.jshint.split(" ");
     /* jshint -W061 */const gulp_place= $g.place({ variable_eval: (str)=> eval(str), filesCleaner: require("../gulp_cleanJSHINT.js") });/* jshint +W061 */
@@ -22,7 +22,7 @@ module.exports= function({gulp, scripts, $g, $o, app, cordova_target_device, err
     
         function run(){
             return new Promise(function(resolve){
-                gulp.src([ `${folder}${files_pattern}`, `!${folder}${files_not_pattern}` ])
+                gulp.src([ `${folder}**/${files_pattern}`, `!${folder}**/${files_not_pattern}` ])
                     .pipe(gulp_place({ folder, string_wrapper: '"' }))
                     .pipe($g.replace(/\/\/gulp\.remove\.line\r?\n/g, ""))
                     .pipe($g.replace(/[^\n]*(\/\*\s*gulp\s\*\/)?\/\*\s*global gulp_place\s*\*\/\r?\n/g,""))
