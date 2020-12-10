@@ -12,11 +12,11 @@
     "__Comment__sequence": "exclamation mark (!) on the start of task name means to escape it",
     "sequence": [
         "javascript",
-        "scss",
-        "xml",
+        "json_scss_xml",
         "register_jaaJBT",
         "generateReadme",
-        "xml_clean"
+        "xml_clean",
+        "json_clean"
     ],
     "app_keys_map": [
         [ "name", "fullName" ], [ "app_id", "name" ], [ "version" ], [ "build" ], [ "external_publication" ],

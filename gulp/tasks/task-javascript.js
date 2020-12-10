@@ -2,7 +2,7 @@
 /* version 0.1.1 */
 module.exports= function({gulp, scripts, $g, $o, app, cordova_target_device, error}){
     const /* files source and destination */
-        [ folder, files_pattern, files_not_pattern ]= [ app.directories.src, "*.js", "*.sub.js" ],
+        [ folder, files_pattern, files_not_pattern ]= [ app.directories.src+"**/", "*.js", "*.sub.js" ],
         destination= app.directories.bin;
     const [jshint_cmd, ...jshint_rest]= scripts.jshint.split(" ");
     const skip_final_jshint= [ "core.js", "index.js" ];
