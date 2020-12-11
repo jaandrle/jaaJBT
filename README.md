@@ -6,7 +6,9 @@ This script provide basic script updating/version checking functionality. Copy t
 See **[package.json:line27](./package.json#L27)**
 
 ### Building tools overview
-There are overview of my scripts.
+<detail>
+<summary>There are overview of my scripts.</summary>
+
 #### aspect_ratio_scss
 Pomocné utility pro zachování poměru (např. obrázku) pomocí vlastně `padding-bottom` triku a absolutního pozicování uvnitř relativního rodiče.
 
@@ -125,3 +127,4 @@ undefined
 undefined
 
 [Link to source](bin/config/config_general/ios_params.sub.xml)
+</detail>
