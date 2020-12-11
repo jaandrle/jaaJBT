@@ -139,7 +139,7 @@ function UpdateConfig(results){
 }
 
 function getJSON(url){ return new Promise(function(resolve, reject){ 
-    https.get(url, function(response){
+    https.get(url, { headers: { 'Cache-Control': 'no-cache' } }, function(response){
         let data= "";
         response.on("data", chunk=> data+= chunk);
         response.on("end", function(){ toConsole(colors.g+url+colors.R, "", spaces.repeat(2)+"Connection estabisled"); try{ resolve(JSON.parse(data)); } catch(e){ reject(e); } });
