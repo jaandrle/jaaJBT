@@ -23,7 +23,7 @@ module.exports= function({app, $gulp_folder, gulp, error, $g, $o, scripts}){
             templateMain: jsondoc_modifications+"jaaJBT_main.json.txt",
             templateItem: jsondoc_modifications+"jaaJBT_nth.json.txt",
         })()
-        .then(json=> app.external_publication ? JSON.stringify(JSON.parse(json)) : json)
+        //.then(json=> app.external_publication ? JSON.stringify(JSON.parse(json)) : json)
         .then(writeDoc("jaaJBT.json"))
         .catch(error.handler)
         .then(cb);
