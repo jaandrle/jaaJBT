@@ -44,7 +44,16 @@ function check(){
     .then(function(data){
         const remote_jaaJBT= consolidateJSONObjects(data);
         let results= [];
-        if(isNewer(remote_jaaJBT.config.version)) return toConsole(`Update is not possible (new version ${remote_jaaJBT.config.version})`, "error", spaces.repeat(2)+"Your `jaaJBT.js` script must be up-to-date to proper comparing/updating!");
+        if(isNewer(remote_jaaJBT.config.version))
+            return toConsole(
+                colors.e+"Update is not possible!",
+                "error",
+                [ 
+                    "Your 'jaaJBT.js' script must be up-to-date to proper comparing/updating!",
+                    `Current version '${version}', required version ${remote_jaaJBT.config.version}.`,
+                    "For update, please visist: https://github.com/jaandrle/jaaJBT"
+                ].map(t=> spaces.repeat(2)+t).join("\n")
+            );
         Object.keys(local_jaaJBT.scripts||{}).forEach(function(key){
             const remote_k= remote_jaaJBT.scripts[key];
             let local_k= local_jaaJBT.scripts[key];
@@ -133,7 +142,7 @@ function getJSON(url){ return new Promise(function(resolve, reject){
     https.get(url, function(response){
         let data= "";
         response.on("data", chunk=> data+= chunk);
-        response.on("end", function(){ toConsole(url, "", "Connection estabisled"); try{ resolve(JSON.parse(data)); } catch(e){ reject(e); } });
+        response.on("end", function(){ toConsole(colors.g+url+colors.R, "", spaces.repeat(2)+"Connection estabisled"); try{ resolve(JSON.parse(data)); } catch(e){ reject(e); } });
     }).on("error", reject);
 });}
 function handleErrorJSON(error){
