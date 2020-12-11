@@ -1,7 +1,8 @@
-/* jshint esversion: 6,-W097, -W040, node: true, expr: true, undef: true */
+/* jshint esversion: 6,-W097, -W040, node: true, expr: true, undef: true, maxparams: 5 */
 /*jsondoc={
-    "version": "0.1.2",
+    "version": "0.2.0",
     "script_name": "jsonDoc",
+    "description": "Naive script for searching JSONs for given files and generating documentations based on templates. More description __TBD__.",
     "root_path": "gulp_path"
 }*/
 module.exports= function initGenerateJSONDoc({
@@ -14,8 +15,8 @@ module.exports= function initGenerateJSONDoc({
     }= {}){
     if(!fs) throw new Error("Missing argument `fs`!");
     const
-        folder_glob_reg= /\*\*\/$/g,
-        folder_deep_glob_reg= /\*\*\/\*\*\/$/g;
+        folder_glob_reg= /\*\*\/$/,
+        folder_deep_glob_reg= /\*\*\/\*\*\/$/;
     const main_helpersFunctions= {
         joinLines: (multi_line, j= "\n")=> Array.isArray(multi_line) ? multi_line.join(j) : multi_line,
         ifPartial, partial
@@ -31,7 +32,6 @@ module.exports= function initGenerateJSONDoc({
             templateItem= main_templateItem,
             templateMain= main_templateMain
         }= {}){
-        //console.log({ files, jsondoc_pattern, helpers_functions, templateItem, templateMain });
         if(!files) throw new Error("Missing argument `files`!");
         const /* consts values initialization */
             jsondoc_reg= initRegExp(jsondoc_pattern),
@@ -43,7 +43,7 @@ module.exports= function initGenerateJSONDoc({
 
         let folders= [ folders_part.replace(/\*\*\//g, "") ];
         if(folder_glob_reg.test(folders_part)) folders= folders.concat(getFolders(folders_part));
-
+        
         return ()=> new Promise(function(resolve,reject){
             try{
                 const jsons= folders.map(toJSONs).filter(obj_arrs=> obj_arrs.length).reduce(/* flat throught folders */(acc, curr)=> (acc.push(...curr), acc), []);
@@ -108,7 +108,7 @@ module.exports= function initGenerateJSONDoc({
         const parent_folder= folders_pattern.replace(/\*\*\//g, "");
         const first_deep= fs.readdirSync(parent_folder).filter(item=> fs.statSync(parent_folder+item).isDirectory()).map(folder_name=> parent_folder+folder_name+"/");
         if(!folder_deep_glob_reg.test(folders_pattern)) return first_deep;
-        const subFoldersPattern= folder=> folder+"**/".repeat(folders_pattern.match(/\*\*\//g).length);
+        const subFoldersPattern= folder=> folder+"**/".repeat(folders_pattern.match(/\*\*\//g).length-1);
         return first_deep.concat(first_deep.reduce((acc, folder)=> acc.concat(getFolders(subFoldersPattern(folder))), []));
     }
     /* file reading */

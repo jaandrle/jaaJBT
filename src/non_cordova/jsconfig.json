@@ -2,7 +2,7 @@
     "version": "1.0.0",
     "script_name": "jsconfig",
     "description": "Just `jsconfig.json` config primary for VS Code editor.",
-    "root_path": "root"
+    "root_path": "root_path"
 }*/
 {
     "include": [
