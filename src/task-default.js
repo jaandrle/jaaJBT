@@ -1,6 +1,6 @@
 /* jshint esversion: 6,-W097, -W040, node: true, expr: true */
 /*jsondoc={
-    "version": "1.0.1",
+    "version": "1.0.2",
     "script_name": "gulp_task_default",
     "description": "Main/default gulp task for serializing others tasks scripts. More description __TBD__.",
     "root_path": "gulp_tasks"

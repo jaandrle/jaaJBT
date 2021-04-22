@@ -1,13 +1,16 @@
 /* jshint esversion: 6,-W097, -W040, node: true, expr: true */
 /*jsondoc={
-    "version": "1.0.1",
+    "version": "1.0.2",
     "script_name": "gulp_task_default",
     "description": "Main/default gulp task for serializing others tasks scripts. More description __TBD__.",
     "root_path": "gulp_tasks"
 }*/
 module.exports= function({gulp, scripts, $g, $o, app, cordova_target_device, error}){
     return function(cb){
-        const logs= app.directories.gulp+"logs/gulpfile.log";
+        const logs_dir= app.directories.gulp+"logs";
+        const logs= logs_dir+"/gulpfile.log";
+        if(!$o.fs.existsSync(logs_dir))
+            $o.fs.mkdirSync(logs_dir);
         $o.fs.readFile(logs, function(err,data){
             const show_github= err||JSON.parse(data.toString()).build!==app.build;
             const full_sequence= show_github||app.external_publication;

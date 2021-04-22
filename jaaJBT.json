@@ -11,7 +11,7 @@
             "target_path": "scss_atoms"
         },
         "gulpfile": {
-            "version": "1.1.4",
+            "version": "1.1.5",
             "src": "bin/gulpfile.js",
             "description": "Common gulpfile for my projects. It dynamically loads configuration from `package.json` and tasks from `./gulp/tasks/`. More description __TBD__.",
             "target_path": "root_path"
@@ -53,7 +53,7 @@
             "target_path": "gulp_tasks"
         },
         "gulp_task_default": {
-            "version": "1.0.1",
+            "version": "1.0.2",
             "src": "bin/task-default.js",
             "description": "Main/default gulp task for serializing others tasks scripts. More description __TBD__.",
             "target_path": "gulp_tasks"
