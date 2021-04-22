@@ -7,7 +7,10 @@
 }*/
 module.exports= function({gulp, scripts, $g, $o, app, cordova_target_device, error}){
     return function(cb){
-        const logs= app.directories.gulp+"logs/gulpfile.log";
+        const logs_dir= app.directories.gulp+"logs";
+        const logs= logs_dir+"/gulpfile.log";
+        if(!$o.fs.existsSync(logs_dir))
+            $o.fs.mkdirSync(logs_dir);
         $o.fs.readFile(logs, function(err,data){
             const show_github= err||JSON.parse(data.toString()).build!==app.build;
             const full_sequence= show_github||app.external_publication;
