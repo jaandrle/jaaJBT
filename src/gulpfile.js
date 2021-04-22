@@ -1,6 +1,6 @@
 /* jshint esversion: 6, node: true */
 /*jsondoc={
-    "version": "1.1.4",
+    "version": "1.1.5",
     "script_name": "gulpfile",
     "description": "Common gulpfile for my projects. It dynamically loads configuration from `package.json` and tasks from `./gulp/tasks/`. More description __TBD__.",
     "root_path": "root_path"
@@ -54,7 +54,7 @@ function mapDependencies(dependencies, $o_default){//nahradit (?): https://githu
     let out= {$g: {} /* for "gulp-" */ , $o: $o_default /* for others */};
 
     dependencies_keys.forEach(cmd=>{
-        if(cmd==="gulp") return false;
+        if(cmd==="gulp"||cmd==="jaajbt-cli") return false;
         let out_key= "$o";
         const name= rename_keys.indexOf(cmd)!==-1 ? rename[cmd].replace(pre, setTo$g) : cmd.replace(pre, setTo$g);
         out[out_key][name]= require(cmd);
