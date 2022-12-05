@@ -126,7 +126,7 @@
         "gulp-sourcemaps": "^2.6.5",
         "gulp-stylus": ">=2.7.0",
         "gulp-util": ">=3.0.8",
-        "jshint": "^2.9.7"
+        "jshint": "^2.13.6"
     },
     "devDependencies": {
         "jsdoc-to-markdown": "^5.0.1"
