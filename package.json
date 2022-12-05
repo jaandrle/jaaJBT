@@ -129,7 +129,7 @@
         "jshint": "^2.13.6"
     },
     "devDependencies": {
-        "jsdoc-to-markdown": "^5.0.1"
+        "jsdoc-to-markdown": "^8.0.0"
     },
     "jshintConfig": {
         "esversion": 6,
